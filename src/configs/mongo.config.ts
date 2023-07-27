@@ -1,12 +1,8 @@
 import { ConfigService } from '@nestjs/config';
-import { TypegooseModuleOptions } from 'nestjs-typegoose';
 
-export const getMongoConfig = async (
-  configService: ConfigService,
-): Promise<TypegooseModuleOptions> => {
+export const getMongoConfig = async (configService: ConfigService) => {
   return {
     uri: getMongoString(configService),
-    ...getMongoOptions(),
   };
 };
 
@@ -24,9 +20,3 @@ const getMongoString = (configService: ConfigService): string => {
     'retryWrites=true&w=majority'
   );
 };
-
-const getMongoOptions = () => ({
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
