@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Review } from './review.model';
+import { Review, ReviewDocument, ReviewSchema } from './review.model';
 import { CreateReviewDto } from './dto/create-review.dto';
 
 import { Types } from 'mongoose';
@@ -10,13 +10,15 @@ import { Types } from 'mongoose';
 export class ReviewService {
   constructor(
     @InjectModel(Review.name)
-    private readonly reviewModel: Model<Review>,
+    private readonly reviewModel: Model<ReviewDocument>,
   ) {}
 
   async create(dto: CreateReviewDto): Promise<Review> {
-    console.log(dto);
-    const createdReview = (await this.reviewModel.create(dto));
-    return createdReview.save();
+    const createdReview = await this.reviewModel.create(dto);
+
+    // await createdReview.save({ timestamps: true });
+
+    return createdReview;
   }
 
   async delete(id: string): Promise<Review | null> {

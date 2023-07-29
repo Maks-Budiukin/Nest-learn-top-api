@@ -10,11 +10,20 @@ import {
 } from '@nestjs/common';
 import { Product } from './product.model';
 import { FindProductDto } from './dto/find-product.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Controller('product')
 export class ProductController {
+  constructor(
+    @InjectModel(Product.name)
+    private readonly productModel: Model<Product>,
+  ) {}
+
   @Post('create')
-  async create(@Body() dto: Omit<Product, '_id'>) {}
+  async create(@Body() dto) {
+    return await this.productModel.create(dto);
+  }
 
   @Get(':id')
   async get(@Param('id') id: string) {}
