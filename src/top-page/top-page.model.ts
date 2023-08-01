@@ -32,6 +32,7 @@ class TopPageAdvantage {
 
 export type TopPageDocument = HydratedDocument<TopPage>;
 
+@Schema({ versionKey: false, timestamps: true })
 export class TopPage {
   @Prop({ enum: TopLevelCategory })
   firstCategory: TopLevelCategory;

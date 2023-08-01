@@ -11,6 +11,7 @@ class ProductCharacteristic {
 
 export type ProductDocument = HydratedDocument<Product>;
 
+@Schema({ versionKey: false, timestamps: true })
 export class Product {
   @Prop()
   image: string;

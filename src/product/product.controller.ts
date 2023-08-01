@@ -7,15 +7,21 @@ import {
   Delete,
   Patch,
   HttpCode,
+  Inject,
 } from '@nestjs/common';
 import { Product } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductService } from './product.service';
 import { FindProductDto } from './dto/find-product.dto';
+import { ReviewService } from 'src/review/review.service';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    @Inject(ReviewService)
+    private readonly reviewService: ReviewService,
+    private readonly productService: ProductService,
+  ) {}
 
   @Post('create')
   async create(@Body() dto: CreateProductDto) {
@@ -29,6 +35,7 @@ export class ProductController {
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
+    await this.reviewService.deleteByProductId(id);
     return await this.productService.delete(id);
   }
 

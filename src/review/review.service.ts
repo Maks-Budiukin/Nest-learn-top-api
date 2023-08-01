@@ -31,12 +31,10 @@ export class ReviewService {
     return this.reviewModel.find({ productId: new Types.ObjectId(productId) });
   }
 
-  async deleteByProductId(
+  public async deleteByProductId(
     productId: string,
   ): Promise<DeleteResult | HttpException> {
-    const deletedReviews = this.reviewModel.deleteMany({
-      productId: new Types.ObjectId(productId),
-    });
+    const deletedReviews = this.reviewModel.deleteMany({ productId });
     if (!deletedReviews) {
       return new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
     }

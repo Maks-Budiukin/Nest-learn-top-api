@@ -4,6 +4,7 @@ import { Product, ProductDocument } from './product.model';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
+import { ReviewService } from 'src/review/review.service';
 
 @Injectable()
 export class ProductService {
