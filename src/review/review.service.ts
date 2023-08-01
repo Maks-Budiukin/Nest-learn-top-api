@@ -1,10 +1,12 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review, ReviewDocument, ReviewSchema } from './review.model';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { DeleteResult } from 'mongodb/mongodb';
 
 import { Types } from 'mongoose';
+import { REVIEW_NOT_FOUND } from './review.constants';
 
 @Injectable()
 export class ReviewService {
@@ -22,13 +24,23 @@ export class ReviewService {
   }
 
   async delete(id: string): Promise<Review | null> {
-    return this.reviewModel.findByIdAndDelete(id).exec();
+    return this.reviewModel.findByIdAndDelete(id);
   }
 
   async findByProductId(productId: string): Promise<Review[]> {
-    return this.reviewModel
-      .find({ productId: new Types.ObjectId(productId) })
-      .exec();
+    return this.reviewModel.find({ productId: new Types.ObjectId(productId) });
+  }
+
+  async deleteByProductId(
+    productId: string,
+  ): Promise<DeleteResult | HttpException> {
+    const deletedReviews = this.reviewModel.deleteMany({
+      productId: new Types.ObjectId(productId),
+    });
+    if (!deletedReviews) {
+      return new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return deletedReviews;
   }
 }
 

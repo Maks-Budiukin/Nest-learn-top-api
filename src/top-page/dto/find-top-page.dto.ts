@@ -1,4 +1,9 @@
-import { TopLevelCategory } from '../top-page.model';
+enum TopLevelCategory {
+  Courses,
+  Services,
+  Books,
+  Products,
+}
 
 export class FindTopPageDto {
   firstCategory: TopLevelCategory;

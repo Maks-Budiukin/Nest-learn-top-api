@@ -9,32 +9,36 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { Product } from './product.model';
+import { CreateProductDto } from './dto/create-product.dto';
+import { ProductService } from './product.service';
 import { FindProductDto } from './dto/find-product.dto';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 
 @Controller('product')
 export class ProductController {
-  constructor(
-    @InjectModel(Product.name)
-    private readonly productModel: Model<Product>,
-  ) {}
+  constructor(private readonly productService: ProductService) {}
 
   @Post('create')
-  async create(@Body() dto) {
-    return await this.productModel.create(dto);
+  async create(@Body() dto: CreateProductDto) {
+    return await this.productService.create(dto);
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) {}
+  async get(@Param('id') id: string) {
+    return await this.productService.getById(id);
+  }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {}
+  async delete(@Param('id') id: string) {
+    return await this.productService.delete(id);
+  }
 
   @Patch(':id')
-  async patch(@Param('id') id: string, @Body() dto: Product) {}
+  async patch(@Param('id') id: string, @Body() dto: Product) {
+    return await this.productService.update(dto, id);
+  }
 
-  @HttpCode(200)
-  @Post()
-  async find(@Body() dto: FindProductDto) {}
+  @Get()
+  async find(@Body() dto: FindProductDto) {
+    return await this.productService.getAll(dto);
+  }
 }
