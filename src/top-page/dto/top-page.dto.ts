@@ -1,3 +1,11 @@
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+
 enum TopLevelCategory {
   Courses,
   Services,
@@ -18,14 +26,36 @@ class TopPageAdvantage {
 }
 
 export class TopPageDto {
+  @IsObject()
   firstCategory: TopLevelCategory;
+
+  @IsString()
   secondCategory: string;
+
+  @IsString()
   alias: string;
+
+  @IsString()
   title: string;
+
+  @IsString()
   category: string;
+
+  @IsObject()
+  @IsOptional()
   hh?: HhData;
+
+  @IsArray()
+  @IsString({ each: true })
   advantages: TopPageAdvantage[];
+
+  @IsString()
   seoText: string;
+
+  @IsString()
   tagsTitle: string;
+
+  @IsArray()
+  @IsString({ each: true })
   tags: string[];
 }

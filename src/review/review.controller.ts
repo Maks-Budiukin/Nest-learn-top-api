@@ -18,7 +18,6 @@ export class ReviewController {
 
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
-    console.log('121', dto);
     return this.reviewService.create(dto);
   }
 

@@ -1,3 +1,5 @@
+import { IsEnum } from 'class-validator';
+
 enum TopLevelCategory {
   Courses,
   Services,
@@ -6,5 +8,6 @@ enum TopLevelCategory {
 }
 
 export class FindTopPageDto {
+  @IsEnum(TopLevelCategory)
   firstCategory: TopLevelCategory;
 }
