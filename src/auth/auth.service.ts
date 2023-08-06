@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -48,8 +47,6 @@ export class AuthService {
     }
 
     const payload = user.email;
-
-    // const token = await this.jwtService.signAsync(payload);
 
     return { email: user.email };
   }

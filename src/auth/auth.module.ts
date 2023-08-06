@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getJWTConfig } from 'src/configs/jwt.config';
+import { PassportModule } from '@nestjs/passport';
+import { JWTStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -20,13 +22,10 @@ import { getJWTConfig } from 'src/configs/jwt.config';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        return {
-          secret: await configService.get('JWT_SECRET'),
-        };
-      },
+      useFactory: getJWTConfig,
     }),
+    PassportModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, JWTStrategy],
 })
 export class AuthModule {}
