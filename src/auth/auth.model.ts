@@ -10,6 +10,9 @@ export class Auth {
 
   @Prop()
   password: string;
+
+  @Prop({ default: null })
+  token: string;
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);
