@@ -23,9 +23,9 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(hello: Auth) {
-    const decodedUser = await this.authModel.findOne({ email: hello });
-    console.log('USER IN STRATEGY', hello);
+  async validate(_id: string) {
+    const decodedUser = await this.authModel.findById(_id);
+    console.log('USER IN STRATEGY', _id);
     console.log('DECODED USER IN STRATEGY', decodedUser);
 
     return decodedUser;

@@ -48,8 +48,8 @@ export class AuthService {
     return user;
   }
 
-  async login(user) {
-    const payload = user.email;
+  async login(user: AuthDto) {
+    const payload = user._id;
     // console.log('USER IN LOGIN BEFORE JWTSIGN', user);
     const token = await this.jwtService.signAsync(payload);
     const updatedUser = await this.authModel.findByIdAndUpdate(

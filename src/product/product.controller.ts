@@ -8,6 +8,7 @@ import {
   Patch,
   HttpCode,
   Inject,
+  NotFoundException,
 } from '@nestjs/common';
 import { Product } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -30,22 +31,35 @@ export class ProductController {
 
   @Get(':id')
   async get(@Param('id') id: string) {
-    return await this.productService.getById(id);
+    const product = await this.productService.getById(id);
+    if (!product) {
+      throw new NotFoundException('Product not found!');
+    }
+    return product;
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
+    const deletedProduct = await this.productService.delete(id);
+    if (!deletedProduct) {
+      throw new NotFoundException('Can not delete! Product not found!');
+    }
     await this.reviewService.deleteByProductId(id);
-    return await this.productService.delete(id);
+    return deletedProduct;
   }
 
   @Patch(':id')
-  async patch(@Param('id') id: string, @Body() dto: Product) {
-    return await this.productService.update(dto, id);
+  async patch(@Param('id') id: string, @Body() dto: CreateProductDto) {
+    const updatedProduct = await this.productService.update(dto, id);
+    if (!updatedProduct) {
+      throw new NotFoundException('Can not update! Product not found!');
+    }
+    return updatedProduct;
   }
 
-  @Get()
+  @HttpCode(200)
+  @Post('find')
   async find(@Body() dto: FindProductDto) {
-    return await this.productService.getAll(dto);
+    return await this.productService.findWithReviews(dto);
   }
 }

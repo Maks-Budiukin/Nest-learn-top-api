@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Type } from 'class-transformer';
+import { IsArray, ValidateNested } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 
 class ProductCharacteristic {
@@ -23,13 +25,10 @@ export class Product {
   price: number;
 
   @Prop()
-  oldPrice: number;
+  oldPrice?: number;
 
   @Prop()
   credit: number;
-
-  @Prop()
-  calculatedRating: number;
 
   @Prop()
   description: string;
@@ -43,9 +42,13 @@ export class Product {
   @Prop({ type: () => [String] })
   categories: string[];
 
+  // @IsArray()
   @Prop({ type: () => [String] })
   tags: string[];
 
+  // @IsArray()
+  // @ValidateNested()
+  // @Type(() => ProductCharacteristic)
   @Prop({ type: () => [ProductCharacteristic], _id: false })
   characteristics: ProductCharacteristic[];
 }

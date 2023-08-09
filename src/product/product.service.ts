@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
 import { ReviewService } from 'src/review/review.service';
+import { Review } from 'src/review/review.model';
 
 @Injectable()
 export class ProductService {
@@ -18,13 +19,13 @@ export class ProductService {
     return createdProduct;
   }
 
-  async getAll(dto: FindProductDto): Promise<Product[]> {
-    const category = dto.category;
-    const allProducts = await this.productModel.find({ category }, null, {
-      limit: Number(dto.limit),
-    });
-    return allProducts;
-  }
+  // async getAll(dto: FindProductDto): Promise<Product[]> {
+  //   const category = dto.category;
+  //   const allProducts = await this.productModel.find({ category }, null, {
+  //     limit: Number(dto.limit),
+  //   });
+  //   return allProducts;
+  // }
 
   async getById(id: string): Promise<Product> {
     const product = await this.productModel.findById(id);
@@ -41,5 +42,43 @@ export class ProductService {
   async delete(id: string): Promise<Product> {
     const deletedProduct = await this.productModel.findByIdAndDelete(id);
     return deletedProduct;
+  }
+
+  async findWithReviews(
+    dto: FindProductDto,
+  ): Promise<
+    (Product & { review: Review[]; reviewCount: number; reviewAvg: number })[]
+  > {
+    return this.productModel.aggregate([
+      {
+        $match: {
+          categories: dto.category,
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+
+      {
+        $limit: dto.limit,
+      },
+      {
+        $lookup: {
+          from: Review.name,
+          localField: '_id',
+          foreignField: 'productId',
+          as: 'reviews',
+        },
+      },
+      {
+        $addFields: {
+          reviewCount: { $size: '$reviews' },
+          reviewAvg: { $avg: '$review.rating' },
+        },
+      },
+    ]);
+    //  (as Product & { review: Review[], reviewCount: number, reviewAvg: number })[];
   }
 }
