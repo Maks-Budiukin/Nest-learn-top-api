@@ -19,8 +19,8 @@ export class Review {
   @Prop()
   rating: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'Product' })
-  productId: Product;
+  @Prop({ type: Types.ObjectId, ref: Product.name })
+  productId: Types.ObjectId;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);

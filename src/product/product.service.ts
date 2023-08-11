@@ -11,7 +11,7 @@ import { Review } from 'src/review/review.model';
 export class ProductService {
   constructor(
     @InjectModel(Product.name)
-    private readonly productModel: Model<ProductDocument>,
+    private readonly productModel: Model<Product>,
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {
@@ -49,36 +49,38 @@ export class ProductService {
   ): Promise<
     (Product & { review: Review[]; reviewCount: number; reviewAvg: number })[]
   > {
-    return this.productModel.aggregate([
-      {
-        $match: {
-          categories: dto.category,
+    return this.productModel
+      .aggregate([
+        {
+          $match: {
+            categories: dto.category,
+          },
         },
-      },
-      {
-        $sort: {
-          _id: 1,
+        {
+          $sort: {
+            _id: 1,
+          },
         },
-      },
 
-      {
-        $limit: dto.limit,
-      },
-      {
-        $lookup: {
-          from: Review.name,
-          localField: '_id',
-          foreignField: 'productId',
-          as: 'reviews',
+        {
+          $limit: dto.limit,
         },
-      },
-      {
-        $addFields: {
-          reviewCount: { $size: '$reviews' },
-          reviewAvg: { $avg: '$review.rating' },
+        {
+          $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'productId',
+            as: 'reviews',
+          },
         },
-      },
-    ]);
+        {
+          $addFields: {
+            reviewCount: { $size: '$reviews' },
+            reviewAvg: { $avg: '$reviews.rating' },
+          },
+        },
+      ])
+      .exec();
     //  (as Product & { review: Review[], reviewCount: number, reviewAvg: number })[];
   }
 }

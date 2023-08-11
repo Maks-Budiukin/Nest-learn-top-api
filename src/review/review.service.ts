@@ -16,7 +16,11 @@ export class ReviewService {
   ) {}
 
   async create(dto: CreateReviewDto): Promise<Review> {
-    const createdReview = await this.reviewModel.create(dto);
+    const objID = new Types.ObjectId(dto.productId);
+    const createdReview = await this.reviewModel.create({
+      ...dto,
+      productId: new Types.ObjectId(objID),
+    });
 
     // await createdReview.save({ timestamps: true });
 

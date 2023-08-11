@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProductService } from './product.service';
 import { ReviewService } from 'src/review/review.service';
 import { ReviewModule } from 'src/review/review.module';
+import { Review, ReviewSchema } from 'src/review/review.model';
 
 @Module({
   controllers: [ProductController],
