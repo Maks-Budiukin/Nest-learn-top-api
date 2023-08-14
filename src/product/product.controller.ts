@@ -14,7 +14,7 @@ import { Product } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductService } from './product.service';
 import { FindProductDto } from './dto/find-product.dto';
-import { ReviewService } from 'src/review/review.service';
+import { ReviewService } from '../review/review.service';
 
 @Controller('product')
 export class ProductController {

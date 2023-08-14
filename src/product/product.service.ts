@@ -4,8 +4,7 @@ import { Product, ProductDocument } from './product.model';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
-import { ReviewService } from 'src/review/review.service';
-import { Review } from 'src/review/review.model';
+import { Review } from '../review/review.model';
 
 @Injectable()
 export class ProductService {
@@ -45,10 +44,18 @@ export class ProductService {
   }
 
   async findWithReviews(
-    dto: FindProductDto,
+    dto,
   ): Promise<
     (Product & { review: Review[]; reviewCount: number; reviewAvg: number })[]
   > {
+    // let matchObj = {
+    //   categories: dto.category,
+    // };
+
+    // if (dto.names) {
+    //   matchObj.names = dto.names;
+    // }
+
     return this.productModel
       .aggregate([
         {

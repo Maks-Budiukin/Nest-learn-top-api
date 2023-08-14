@@ -40,24 +40,24 @@ export class AuthService {
 
   async validateUser(dto: AuthDto) {
     const user = await this.findUser(dto.email);
-    const correctPassword = await bcrypt.compare(dto.password, user.password);
-    if (!user || !correctPassword) {
+    if (!user) {
       throw new UnauthorizedException('Email or password is wrong!');
     }
-
+    const correctPassword = await bcrypt.compare(dto.password, user.password);
+    if (!correctPassword) {
+      throw new UnauthorizedException('Email or password is wrong!');
+    }
     return user;
   }
 
   async login(user: AuthDto) {
-    const payload = user._id;
-    // console.log('USER IN LOGIN BEFORE JWTSIGN', user);
+    const payload = user._id.toString();
     const token = await this.jwtService.signAsync(payload);
     const updatedUser = await this.authModel.findByIdAndUpdate(
       user._id,
       { token },
       { new: true },
     );
-    console.log('USER IN LOGIN', user);
     return {
       updatedUser,
     };
