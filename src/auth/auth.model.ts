@@ -6,10 +6,6 @@ export type AuthDocument = HydratedDocument<Auth>;
 
 @Schema({ versionKey: false, timestamps: true })
 export class Auth {
-  // @Prop()
-  // @IsOptional()
-  // _id: string;
-
   @Prop({ unique: true })
   email: string;
 

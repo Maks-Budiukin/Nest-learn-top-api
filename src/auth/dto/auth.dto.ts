@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class AuthDto {
   @IsOptional()
@@ -11,6 +17,7 @@ export class AuthDto {
 
   @IsString()
   @IsNotEmpty()
+  @MinLength(6, { message: 'Min password length is 6 symbols' })
   password: string;
 
   @IsOptional()

@@ -40,8 +40,8 @@ export class ReviewController {
     @Param('productId') productId: string,
     @Req() request: Request,
   ) {
-    console.log('REQUEST.USER', request.user);
-    console.log('REQUEST.BODY', request.body);
+    // console.log('REQUEST.USER', request.user);
+    // console.log('REQUEST.BODY', request.body);
     // console.log('REQUEST!!!', request);
     return this.reviewService.findByProductId(productId);
   }

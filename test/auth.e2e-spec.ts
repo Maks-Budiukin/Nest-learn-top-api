@@ -10,6 +10,10 @@ const loginDto: AuthDto = {
   password: '1234567',
 };
 
+const wrongLoginDto = {
+  email: 'test17@gmail.com',
+};
+
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
   let createdId: string;
@@ -47,6 +51,27 @@ describe('AuthController (e2e)', () => {
       .send({ ...loginDto, email: 'aaa@a.ru' })
       .expect(401);
   });
+
+  // it('/auth/login (POST) - missing data', () => {
+  //   return request(app.getHttpServer())
+  //     .post('/auth/login')
+  //     .send({})
+  //     .expect(400);
+  // });
+
+  // it('/auth/login (POST) - missing email', () => {
+  //   return request(app.getHttpServer())
+  //     .post('/auth/login')
+  //     .send({ password: '1234567' })
+  //     .expect(400);
+  // });
+
+  // it('/auth/login (POST) - missing password', () => {
+  //   return request(app.getHttpServer())
+  //     .post('/auth/login')
+  //     .send(wrongLoginDto)
+  //     .expect(400);
+  // });
 
   afterAll(() => {
     disconnect();

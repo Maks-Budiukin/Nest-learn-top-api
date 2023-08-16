@@ -16,7 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRootAsync(
       {
         useFactory: () => ({
-          uri: 'mongodb+srv://learnnestzlodey:c8fx1g33GNPt3gYR@cluster0.x6wnx6h.mongodb.net/NestDB?retryWrites=true&w=majority',
+          uri: 'mongodb://localhost:27017',
+          // uri: 'mongodb+srv://learnnestzlodey:c8fx1g33GNPt3gYR@cluster0.x6wnx6h.mongodb.net/NestDB?retryWrites=true&w=majority',
         }),
       },
       // {

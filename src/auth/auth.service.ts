@@ -50,16 +50,16 @@ export class AuthService {
     return user;
   }
 
-  async login(user: AuthDto) {
-    const payload = user._id.toString();
+  async login(userData: AuthDto) {
+    const payload = userData._id.toString();
     const token = await this.jwtService.signAsync(payload);
-    const updatedUser = await this.authModel.findByIdAndUpdate(
-      user._id,
+    const user = await this.authModel.findByIdAndUpdate(
+      userData._id,
       { token },
       { new: true },
     );
     return {
-      updatedUser,
+      user,
     };
   }
 
